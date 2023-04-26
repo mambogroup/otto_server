@@ -14,7 +14,7 @@ spring:
     hibernate:
       ddl-auto: create
     properties:
-      "[hibernate.format_sql]": true
+      "[hibernate.format_sql]": false
   output:
     ansi:
       enabled: always
@@ -23,5 +23,5 @@ logging:
   level:
     "[org.hibernate.SQL]": DEBUG
     "[site.metacoding.white]": DEBUG
-    root: DEBUG
+    root: INFO
     "[org.springframework.boot.autoconfigure]": ERROR
