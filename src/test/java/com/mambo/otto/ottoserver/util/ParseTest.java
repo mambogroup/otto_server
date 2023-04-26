@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 public class ParseTest {
 
     @Test
-    public void chateTest_test(){
-        String val ="1";
+    public void chateTest_test() {
+        String val = "1";
 
         int result = Integer.parseInt(val);
 
@@ -18,5 +18,5 @@ public class ParseTest {
         assertEquals(1, result);
 
     }
-    
+
 }

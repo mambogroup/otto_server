@@ -12,9 +12,14 @@ spring:
   jpa:
     #open-in-view: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
+      #create: 기존테이블 삭제 후 다시 생성 (DROP + CREATE)
+      #create-drop: create와 같으나 종료시점에 테이블 DROP
+      #update: 변경분만 반영(운영DB에서는 사용하면 안됨)
+      #validate: 엔티티와 테이블이 정상 매핑되었는지만 확인
+      #none: 사용하지 않음(사실상 없는 값이지만 관례상 none이라고 한다.)
     properties:
-      "[hibernate.format_sql]": true
+      "[hibernate.format_sql]": false
   output:
     ansi:
       enabled: always
@@ -23,5 +28,5 @@ logging:
   level:
     "[org.hibernate.SQL]": DEBUG
     "[site.metacoding.white]": DEBUG
-    root: DEBUG
+    root: INFO
     "[org.springframework.boot.autoconfigure]": ERROR
