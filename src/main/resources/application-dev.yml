@@ -1,0 +1,27 @@
+server:
+  port: 8000
+  servlet:
+    context-path: /
+
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/ottodb
+    username: root
+    password: 1234
+  jpa:
+    #open-in-view: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      "[hibernate.format_sql]": true
+  output:
+    ansi:
+      enabled: always
+
+logging:
+  level:
+    "[org.hibernate.SQL]": DEBUG
+    "[site.metacoding.white]": DEBUG
+    root: DEBUG
+    "[org.springframework.boot.autoconfigure]": ERROR
