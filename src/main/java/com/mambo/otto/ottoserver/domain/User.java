@@ -56,10 +56,9 @@ public class User {
     private int inUserSignBy;
 
     @Builder
-    public User(Long id, String userUid, String username, String email, String password, String nickname, String hpp,
+    public User(String userUid, String username, String email, String password, String nickname, String hpp,
             String birth, String sex, String profileImgurl, LocalDateTime joindate, LocalDateTime leave, int state,
             int signBy) {
-        this.inUserId = id;
         this.vcUserUid = userUid;
         this.vcUserName = username;
         this.vcUserEmail = email;

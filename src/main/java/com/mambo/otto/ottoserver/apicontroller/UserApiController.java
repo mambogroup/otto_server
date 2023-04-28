@@ -3,6 +3,7 @@ package com.mambo.otto.ottoserver.apicontroller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mambo.otto.ottoserver.domain.User;
+import com.mambo.otto.ottoserver.dto.UserReqDto.UserJoinReqDto;
 import com.mambo.otto.ottoserver.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,8 @@ public class UserApiController {
     private final UserService uS;
 
     @PostMapping("/join")
-    public String postMethodName(@RequestBody User user) {
-        uS.save(user);
+    public String postMethodName(@RequestBody UserJoinReqDto joinReqDto) {
+        uS.save(joinReqDto);
 
         return "성공";
     }
