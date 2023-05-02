@@ -27,15 +27,16 @@ public class UserApiController {
     public ResponseDto<?> save(@RequestBody UserJoinReqDto joinReqDto) {
         JoinRespDto joinUser = uS.save(joinReqDto);
 
-        return new ResponseDto<>(1, "로그인이 완료되었습니다    " + joinReqDto.getVcUserName() + " 님 안녕하세요", joinUser);
+        return new ResponseDto<>(1, joinReqDto.getVcUserName(), joinUser);
     }
 
-    @PostMapping("/login")
-    public ResponseDto<?> postMethodName(@RequestBody UserLoginReqDto userLoginReqDto) {
-        SessionUser sUser = uS.login(userLoginReqDto);
-        session.setAttribute("sessionUser", sUser);
+    // @PostMapping("/login")
+    // public ResponseDto<?> postMethodName(@RequestBody UserLoginReqDto
+    // userLoginReqDto) {
+    // SessionUser sUser = uS.login(userLoginReqDto);
+    // session.setAttribute("sessionUser", sUser);
 
-        return new ResponseDto<>(1, "로그인 성공", sUser);
-    }
+    // return new ResponseDto<>(1, "로그인 성공", sUser);
+    // }
 
 }

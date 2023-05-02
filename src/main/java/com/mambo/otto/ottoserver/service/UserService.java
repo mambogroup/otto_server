@@ -28,9 +28,9 @@ public class UserService {
     @Transactional
     public JoinRespDto save(UserJoinReqDto joinReqDto) {
 
-        String encPassword = sha256.encrypt(joinReqDto.getVcUserPassword());
-        System.out.println("테스트 : " + encPassword);
-        joinReqDto.setVcUserPassword(encPassword);
+        String encPhoneNum = sha256.encrypt(joinReqDto.getVcUserHpp());
+        System.out.println("테스트 : " + encPhoneNum);
+        joinReqDto.setVcUserHpp(encPhoneNum);
 
         User userPs = uR.save(joinReqDto.toEntity());
 

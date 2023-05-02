@@ -34,9 +34,13 @@ public class MylottoApiController {
         return new ResponseDto<>(1, "성공", mylottoRepository.findByUserId(id));
     }
 
-    @PostMapping("/mylotto")
+    @PostMapping("/s/mylotto")
     public ResponseDto<?> save(@RequestBody Mylotto mylotto) {
         SessionUser sUser = (SessionUser) session.getAttribute("sessionUser");
+
+        if (sUser == null) {
+            return new ResponseDto<>(1, "로그인이 되어있지 않습니다.", null);
+        }
         mylotto.setInUserId(sUser.getId());
         mylottoRepository.save(mylotto);
         return new ResponseDto<>(1, "sucess to INSERT ", mylotto);
@@ -48,5 +52,4 @@ public class MylottoApiController {
         mylottoRepository.deleteById(id);
         return new ResponseDto<>(1, "DELETE Complited", myPs);
     }
-
 }

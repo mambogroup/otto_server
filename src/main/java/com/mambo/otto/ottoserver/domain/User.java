@@ -27,14 +27,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "in_user_id")
     private Long inUserId;
-    @Column(name = "vc_user_uid", unique = true, nullable = false)
-    private String vcUserUid;
+    // @Column(name = "vc_user_uid", unique = true, nullable = false)
+    // private String vcUserUid;
     @Column(name = "vc_user_name", unique = true, nullable = false)
     private String vcUserName;
     @Column(name = "vc_user_email", unique = true, nullable = false)
     private String vcUserEmail;
-    @Column(name = "vc_user_password", nullable = false)
-    private String vcUserPassword;
+    // @Column(name = "vc_user_password", nullable = false)
+    // private String vcUserPassword;
     @Column(name = "vc_user_nickname", unique = true, nullable = false)
     private String vcUserNickname;
     @Column(name = "vc_user_hpp", unique = true, nullable = false)
@@ -56,14 +56,14 @@ public class User {
     private int inUserSignBy;
 
     @Builder
-    public User(Long id, String userUid, String username, String email, String password, String nickname, String hpp,
+    public User(Long id, String username, String email, String nickname, String hpp,
             String birth, String sex, String profileImgurl, LocalDateTime joindate, LocalDateTime leave, int state,
             int signBy) {
         this.inUserId = id;
-        this.vcUserUid = userUid;
+        // this.vcUserUid = userUid;
         this.vcUserName = username;
         this.vcUserEmail = email;
-        this.vcUserPassword = password;
+        // this.vcUserPassword = password;
         this.vcUserNickname = nickname;
         this.vcUserHpp = hpp;
         this.vcUserBirth = birth;

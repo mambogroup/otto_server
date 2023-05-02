@@ -12,10 +12,10 @@ public class UserReqDto {
     @Getter
     @Setter
     public static class UserJoinReqDto {
-        private String vcUserUid;
+        // private String vcUserUid;
         private String vcUserName;
         private String vcUserEmail;
-        private String vcUserPassword;
+        // private String vcUserPassword;
         private String vcUserNickname;
         private String vcUserHpp;
         private String vcUserBirth;
@@ -23,8 +23,7 @@ public class UserReqDto {
         private int inUserSignBy;
 
         public User toEntity() {
-            return User.builder().userUid(vcUserUid).username(vcUserName).email(vcUserEmail).password(vcUserPassword)
-                    .nickname(vcUserNickname)
+            return User.builder().username(vcUserName).email(vcUserEmail).nickname(vcUserNickname)
                     .hpp(vcUserHpp).birth(vcUserBirth).sex(vcUserSex).signBy(inUserSignBy).build();
         }
     }
