@@ -2,6 +2,8 @@ package com.mambo.otto.ottoserver.apicontroller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mambo.otto.ottoserver.domain.MylottoRepository;
 import com.mambo.otto.ottoserver.dto.ResponseDto;
+import com.mambo.otto.ottoserver.dto.SessionUser;
 import com.mambo.otto.ottoserver.domain.Mylotto;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MylottoApiController {
     private final MylottoRepository mylottoRepository;
+    private final HttpSession session;
 
     @GetMapping("/lottos")
     public ResponseDto<?> home() {
@@ -32,6 +36,8 @@ public class MylottoApiController {
 
     @PostMapping("/mylotto")
     public ResponseDto<?> save(@RequestBody Mylotto mylotto) {
+        SessionUser sUser = (SessionUser) session.getAttribute("sessionUser");
+        mylotto.setInUserId(sUser.getId());
         mylottoRepository.save(mylotto);
         return new ResponseDto<>(1, "sucess to INSERT ", mylotto);
     }

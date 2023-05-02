@@ -2,13 +2,17 @@ package com.mambo.otto.ottoserver.apicontroller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mambo.otto.ottoserver.domain.User;
 import com.mambo.otto.ottoserver.dto.ResponseDto;
+import com.mambo.otto.ottoserver.dto.SessionUser;
+import com.mambo.otto.ottoserver.dto.UserReqDto.UserLoginReqDto;
 import com.mambo.otto.ottoserver.dto.UserReqDto.UserJoinReqDto;
 import com.mambo.otto.ottoserver.dto.UserRespDto.JoinRespDto;
 import com.mambo.otto.ottoserver.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -17,12 +21,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserApiController {
 
     private final UserService uS;
+    private final HttpSession session;
 
     @PostMapping("/join")
     public ResponseDto<?> save(@RequestBody UserJoinReqDto joinReqDto) {
         JoinRespDto joinUser = uS.save(joinReqDto);
 
         return new ResponseDto<>(1, "로그인이 완료되었습니다    " + joinReqDto.getVcUserName() + " 님 안녕하세요", joinUser);
+    }
+
+    @PostMapping("/login")
+    public ResponseDto<?> postMethodName(@RequestBody UserLoginReqDto userLoginReqDto) {
+        SessionUser sUser = uS.login(userLoginReqDto);
+        session.setAttribute("sessionUser", sUser);
+
+        return new ResponseDto<>(1, "로그인 성공", sUser);
     }
 
 }

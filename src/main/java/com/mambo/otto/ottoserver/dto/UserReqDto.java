@@ -31,7 +31,7 @@ public class UserReqDto {
 
     @Getter
     @Setter
-    public static class LoginReqDto {
-        private String hpp;
+    public static class UserLoginReqDto {
+        private String vcUserHpp;
     }
 }
