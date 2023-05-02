@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.mambo.otto.ottoserver.domain.User;
 import com.mambo.otto.ottoserver.domain.UserRepository;
 import com.mambo.otto.ottoserver.dto.UserReqDto.UserJoinReqDto;
+import com.mambo.otto.ottoserver.dto.UserRespDto.JoinRespDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,9 +18,10 @@ public class UserService {
     private final UserRepository uR;
 
     @Transactional
-    public void save(UserJoinReqDto joinReqDto) {
-        User user = joinReqDto.toEntity();
-        uR.save(user);
+    public JoinRespDto save(UserJoinReqDto joinReqDto) {
+
+        User userPs = uR.save(joinReqDto.toEntity());
+        return new JoinRespDto(userPs);
     }
 
 }

@@ -39,4 +39,12 @@ public class MylottoRepository {
         return lottoPS;
     }
 
+    public Mylotto findByLottoId(Long id) {
+        Mylotto lottoPS = eM
+                .createQuery("select lotto from Mylotto lotto where lotto.inMylottoId =:id", Mylotto.class)
+                .setParameter("id", id)
+                .getSingleResult();
+        return lottoPS;
+    }
+
 }

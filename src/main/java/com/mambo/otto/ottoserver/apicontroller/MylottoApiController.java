@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mambo.otto.ottoserver.domain.MylottoRepository;
+import com.mambo.otto.ottoserver.dto.ResponseDto;
 import com.mambo.otto.ottoserver.domain.Mylotto;
 
 import lombok.RequiredArgsConstructor;
@@ -20,26 +21,26 @@ public class MylottoApiController {
     private final MylottoRepository mylottoRepository;
 
     @GetMapping("/lottos")
-    public Object home() {
-        return mylottoRepository.findAll();
+    public ResponseDto<?> home() {
+        return new ResponseDto<>(1, "다 찾았습니다", mylottoRepository.findAll());
     }
 
     @GetMapping("/lotto/{id}")
-    public List<Mylotto> findById(@PathVariable Long id) {
-        return mylottoRepository.findByUserId(id);
+    public ResponseDto<?> findById(@PathVariable Long id) {
+        return new ResponseDto<>(1, "성공", mylottoRepository.findByUserId(id));
     }
 
     @PostMapping("/mylotto")
-    public String inesrt(@RequestBody Mylotto mylotto) {
+    public ResponseDto<?> save(@RequestBody Mylotto mylotto) {
         mylottoRepository.save(mylotto);
-        return "lotto insert OK";
+        return new ResponseDto<>(1, "sucess to INSERT ", mylotto);
     }
 
     @DeleteMapping("/d-mylotto/{id}")
-    public String delete(@PathVariable Long id) {
-        System.out.println("나실행됨?" + id);
+    public ResponseDto<?> delete(@PathVariable Long id) {
+        Mylotto myPs = mylottoRepository.findByLottoId(id);
         mylottoRepository.deleteById(id);
-        return "lotto insert OK";
+        return new ResponseDto<>(1, "DELETE Complited", myPs);
     }
 
 }
