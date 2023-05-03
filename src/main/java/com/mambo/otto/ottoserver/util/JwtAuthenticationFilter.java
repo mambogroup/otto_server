@@ -12,6 +12,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -79,8 +80,13 @@ public class JwtAuthenticationFilter implements Filter {
                 .withSubject("맘보오또로또")
                 .withExpiresAt(expire)
                 .withClaim("phonenumber", userPS.getVcUserHpp())
+                .withClaim("userId", userPS.getInUserId())
                 .sign(Algorithm.HMAC512("맘보"));
         log.debug("디버그 : " + jwtToken);
+
+        SessionUser sessionUser = new SessionUser(User.builder().id(userPS.getInUserId()).build());
+        HttpSession session = req.getSession();
+        session.setAttribute("sessionUser", sessionUser);
 
         // JWT토큰 응답
         customJwtResponse(jwtToken, userPS, resp);

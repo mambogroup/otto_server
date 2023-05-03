@@ -49,9 +49,10 @@ public class JwtAuthorizationFilter implements Filter {
 
         try {
             DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512("맘보")).build().verify(jwtToken);
-            Long userId = decodedJWT.getClaim("id").asLong();
-            String username = decodedJWT.getClaim("username").asString();
-            SessionUser sessionUser = new SessionUser(User.builder().id(userId).username(username).build());
+            Long userId = decodedJWT.getClaim("userId").asLong();
+            String phonenumber = decodedJWT.getClaim("phonenumber").asString();
+            log.debug("디버그토큰2 : " + phonenumber);
+            SessionUser sessionUser = new SessionUser(User.builder().id(userId).hpp(phonenumber).build());
             HttpSession session = req.getSession();
             session.setAttribute("sessionUser", sessionUser);
         } catch (Exception e) {
