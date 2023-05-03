@@ -73,7 +73,7 @@ public class JwtAuthenticationFilter implements Filter {
             return;
         }
 
-        // JWT토큰 생성 1초 = 1/1000
+        // JWT토큰 생성 1초 = 1/1000 , 1000 * 60 * 60 = 1시간
         Date expire = new Date(System.currentTimeMillis() + (1000 * 60 * 60));
 
         String jwtToken = JWT.create()

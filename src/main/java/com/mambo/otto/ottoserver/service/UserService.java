@@ -2,6 +2,7 @@ package com.mambo.otto.ottoserver.service;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -15,15 +16,18 @@ import com.mambo.otto.ottoserver.dto.UserRespDto.JoinRespDto;
 import com.mambo.otto.ottoserver.util.SHA256;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class UserService {
 
     private final UserRepository uR;
     private final SHA256 sha256;
+    private final HttpSession session;
+
+    private SessionUser getSession() {
+        return (SessionUser) session.getAttribute("sessionUser");
+    }
 
     @Transactional
     public JoinRespDto save(UserJoinReqDto joinReqDto) {

@@ -1,6 +1,5 @@
 package com.mambo.otto.ottoserver.domain;
 
-import java.security.Timestamp;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -11,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -3,15 +3,11 @@ package com.mambo.otto.ottoserver.apicontroller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mambo.otto.ottoserver.dto.ResponseDto;
-import com.mambo.otto.ottoserver.dto.SessionUser;
-import com.mambo.otto.ottoserver.dto.UserReqDto.UserLoginReqDto;
 import com.mambo.otto.ottoserver.dto.UserReqDto.UserJoinReqDto;
 import com.mambo.otto.ottoserver.dto.UserRespDto.JoinRespDto;
 import com.mambo.otto.ottoserver.service.UserService;
 
 import lombok.RequiredArgsConstructor;
-
-import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserApiController {
 
     private final UserService uS;
-    private final HttpSession session;
 
     @PostMapping("/join")
     public ResponseDto<?> save(@RequestBody UserJoinReqDto joinReqDto) {

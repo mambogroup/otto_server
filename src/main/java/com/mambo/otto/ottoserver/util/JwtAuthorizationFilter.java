@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.context.annotation.Profile;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -36,7 +34,6 @@ public class JwtAuthorizationFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
 
-        // 헤더 Authorization 키값에 Bearer로 적힌 값이 있는지 체크
         String jwtToken = req.getHeader("Authorization");
         log.debug("디버그토큰2 : " + jwtToken);
         if (jwtToken == null) {
@@ -44,14 +41,12 @@ public class JwtAuthorizationFilter implements Filter {
             return;
         }
 
-        // 토큰 검증 /board/1 -> put
         jwtToken = jwtToken.replace("Bearer ", "");
 
         try {
             DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512("맘보")).build().verify(jwtToken);
-            Long userId = decodedJWT.getClaim("userId").asLong();
+            Long userId = decodedJWT.getClaim("userId").asLong();// TODO : 핸들링 필요
             String phonenumber = decodedJWT.getClaim("phonenumber").asString();
-            log.debug("디버그토큰2 : " + phonenumber);
             SessionUser sessionUser = new SessionUser(User.builder().id(userId).hpp(phonenumber).build());
             HttpSession session = req.getSession();
             session.setAttribute("sessionUser", sessionUser);

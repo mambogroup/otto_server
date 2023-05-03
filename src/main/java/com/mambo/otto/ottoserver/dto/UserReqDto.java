@@ -1,7 +1,5 @@
 package com.mambo.otto.ottoserver.dto;
 
-import java.time.LocalDateTime;
-
 import com.mambo.otto.ottoserver.domain.User;
 
 import lombok.Getter;

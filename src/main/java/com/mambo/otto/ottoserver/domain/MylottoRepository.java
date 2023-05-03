@@ -3,7 +3,6 @@ package com.mambo.otto.ottoserver.domain;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
@@ -14,14 +13,12 @@ import lombok.RequiredArgsConstructor;
 public class MylottoRepository {
     private final EntityManager eM;
 
-    @Transactional
     public void save(Mylotto mylotto) {
         eM.persist(mylotto);
     }
 
-    @Transactional
-    public void deleteById(Long id) {
-        eM.createQuery("delete from Mylotto lotto where lotto.inUserId = :id").setParameter("id", id)
+    public void deleteBylottoId(Long id) {
+        eM.createQuery("delete from Mylotto lotto where lotto.inMylottoId = :id").setParameter("id", id)
                 .executeUpdate();
     }
 
@@ -39,10 +36,12 @@ public class MylottoRepository {
         return lottoPS;
     }
 
-    public Mylotto findByLottoId(Long id) {
+    public Mylotto findByLottoId(Long id, Long userId) {
         Mylotto lottoPS = eM
-                .createQuery("select lotto from Mylotto lotto where lotto.inMylottoId =:id", Mylotto.class)
+                .createQuery("select lotto from Mylotto lotto where lotto.inMylottoId =:id and lotto.inUserId =:userId",
+                        Mylotto.class)
                 .setParameter("id", id)
+                .setParameter("userId", userId)
                 .getSingleResult();
         return lottoPS;
     }

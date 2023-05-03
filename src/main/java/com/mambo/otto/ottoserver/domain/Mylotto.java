@@ -7,13 +7,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "tbl_mylotto")
+@NoArgsConstructor
 public class Mylotto {
 
     @Id
@@ -30,4 +33,15 @@ public class Mylotto {
     private String vcMylottoNumbers;
     @Column(name = "in_mylotto_rank")
     private int inMylottoRank;
+
+    @Builder
+    public Mylotto(Long lottoId, Long userId, int round, int tr, String number, int rank) {
+        this.inMylottoId = lottoId;
+        this.inUserId = userId;
+        this.inMylottoRound = round;
+        this.inMylottoTr = tr;
+        this.vcMylottoNumbers = number;
+        this.inMylottoRank = rank;
+
+    }
 }
