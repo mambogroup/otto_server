@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 
 import org.springframework.stereotype.Repository;
 
+import com.mambo.otto.ottoserver.dto.UserReqDto.UserUpdateReqDto;
+
 import lombok.RequiredArgsConstructor;
 
 @Repository
@@ -29,6 +31,32 @@ public class UserRepository {
         } catch (Exception e) {
             return Optional.empty();
         }
+    }
 
+    public Optional<User> findByUserId(Long id) {
+        try {
+            Optional<User> userOp = Optional.of(eM.createQuery(
+                    "select u from User u where u.inUserId=:id",
+                    User.class)
+                    .setParameter("id", id)
+                    .getSingleResult());
+            return userOp;
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
+    public void update(UserUpdateReqDto user) {
+
+        eM.createQuery(
+                "update User u set u.vcUserEmail =:vcUserEmail where inUserId = :id")
+                .setParameter("vcUserEmail", user.getVcUserEmail())
+                .setParameter("id", user.getInUserId()).executeUpdate();
+
+    }
+
+    public void deleteBy(Long id) {
+        eM.createQuery("delete from User u where u.inUserId = :id").setParameter("id", id)
+                .executeUpdate();
     }
 }

@@ -27,13 +27,16 @@ public class MylottoService {
 
     @Transactional
     public MylottoSaveReqDto save(MylottoSaveReqDto mylotto) {
-        SessionUser sUser = (SessionUser) session.getAttribute("sessionUser");
+        // SessionUser sUser = (SessionUser) session.getAttribute("sessionUser");
+        // if (sUser == null) {
+        // return null;
+        // }
 
-        if (sUser == null) {
+        if (getSession() == null) {
             return null;
         }
 
-        mylotto.setInUserId(sUser.getId());
+        mylotto.setInUserId(getSession().getId());
 
         mylottoRepository.save(mylotto.toEntity());
 

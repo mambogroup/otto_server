@@ -37,6 +37,8 @@ public class User {
     private String vcUserNickname;
     @Column(name = "vc_user_hpp", unique = true, nullable = false)
     private String vcUserHpp;
+    @Column(name = "vc_user_phone", unique = true, nullable = false)
+    private String vcUserPhone;
     @Column(name = "vc_user_birth", nullable = false)
     private String vcUserBirth;
     @Column(name = "vc_user_sex", nullable = false)
@@ -54,7 +56,7 @@ public class User {
     private int inUserSignBy;
 
     @Builder
-    public User(Long id, String username, String email, String nickname, String hpp,
+    public User(Long id, String username, String email, String nickname, String hpp, String phone,
             String birth, String sex, String profileImgurl, LocalDateTime joindate, LocalDateTime leave, int state,
             int signBy) {
         this.inUserId = id;
@@ -64,6 +66,7 @@ public class User {
         // this.vcUserPassword = password;
         this.vcUserNickname = nickname;
         this.vcUserHpp = hpp;
+        this.vcUserPhone = phone;
         this.vcUserBirth = birth;
         this.vcUserSex = sex;
         this.vcUserProfileImgurl = profileImgurl;

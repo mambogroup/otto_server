@@ -16,12 +16,31 @@ public class UserReqDto {
         // private String vcUserPassword;
         private String vcUserNickname;
         private String vcUserHpp;
+        private String vcUserPhone;
         private String vcUserBirth;
         private String vcUserSex;
         private int inUserSignBy;
 
         public User toEntity() {
-            return User.builder().username(vcUserName).email(vcUserEmail).nickname(vcUserNickname)
+            return User.builder().phone(vcUserPhone).username(vcUserName).email(vcUserEmail).nickname(vcUserNickname)
+                    .hpp(vcUserHpp).birth(vcUserBirth).sex(vcUserSex).signBy(inUserSignBy).build();
+        }
+    }
+
+    @Getter
+    @Setter
+    public static class UserUpdateReqDto {
+        private Long inUserId;
+        private String vcUserName;
+        private String vcUserEmail;
+        private String vcUserNickname;
+        private String vcUserHpp;
+        private String vcUserBirth;
+        private String vcUserSex;
+        private int inUserSignBy;
+
+        public User toEntity() {
+            return User.builder().id(inUserId).username(vcUserName).email(vcUserEmail).nickname(vcUserNickname)
                     .hpp(vcUserHpp).birth(vcUserBirth).sex(vcUserSex).signBy(inUserSignBy).build();
         }
     }
