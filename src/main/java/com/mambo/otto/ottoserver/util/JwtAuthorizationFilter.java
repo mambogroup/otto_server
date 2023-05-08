@@ -55,16 +55,10 @@ public class JwtAuthorizationFilter implements Filter {
             return;
         }
 
-        SessionUser sUser = (SessionUser) req.getSession().getAttribute("sessionUser");
-
         jwtToken = jwtToken.replace("Bearer ", "");
         try {
             DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512("맘보")).build().verify(jwtToken);
             Long userId = decodedJWT.getClaim("userId").asLong();
-            if (!sUser.getId().equals(userId)) {
-                customResponse("비정상적인 접근입니다", resp);
-                return;
-            }
             String phonenumber = decodedJWT.getClaim("phonenumber").asString();
             SessionUser sessionUser = new SessionUser(User.builder().id(userId).hpp(phonenumber).build());
             HttpSession session = req.getSession();

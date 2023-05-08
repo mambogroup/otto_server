@@ -67,18 +67,19 @@ public class UserService {
 
     // TODO : 앱 연결 후 update 할 때 Requset Body 구성에 따라서 바꿔야 함
     @Transactional
-    public int updateUser(UserUpdateReqDto updateReqDto) {
+    public User updateUser(UserUpdateReqDto updateReqDto) {
         // JWT 핸들러 거쳐 옴
 
         // 로그인 유저와 세션을 체크
         if (!updateReqDto.getInUserId().equals(getSession().getId())) {
-            return 0;
+            return null;
+
         }
         Optional<User> userOp = uR.findByUserId(updateReqDto.getInUserId());
         userOp.orElseThrow(() -> new RuntimeException("잘못된 접근입니다."));
 
         uR.update(updateReqDto);
-        return 1;
+        return userOp.get();
     }
 
     public String logout() {
