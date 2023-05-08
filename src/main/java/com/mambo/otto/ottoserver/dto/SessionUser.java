@@ -27,7 +27,7 @@ public class SessionUser {
     public SessionUser(User user) {
         this.id = user.getInUserId();
         this.username = user.getVcUserName();
-        this.phoneNumber = user.getVcUserHpp();
+        this.phoneNumber = user.getVcUserPhone();
     }
 
     public User toEntity() {

@@ -34,26 +34,26 @@ public class MylottoApiController {
 
     @GetMapping("/lottos")
     public ResponseDto<?> findAll() {
-        return new ResponseDto<>(1, "다 찾았습니다", mylottoService.findAll());
+        return new ResponseDto<>(1, "200", mylottoService.findAll());
     }
 
     @GetMapping("/lotto")
     public ResponseDto<?> findByUserId() {
         // find by Session data
-        return new ResponseDto<>(1, "성공", mylottoService.findByUserId());
+        return new ResponseDto<>(1, "200", mylottoService.findByUserId());
     }
 
     @PostMapping("/s/mylotto")
     public ResponseDto<?> save(@RequestBody MylottoSaveReqDto mylotto) {
         mylottoService.save(mylotto);
-        return new ResponseDto<>(1, "sucess to INSERT ", mylotto);
+        return new ResponseDto<>(1, "200", mylotto);
     }
 
     @DeleteMapping("/s/d-mylotto")
     public ResponseDto<?> delete(@RequestBody MylottoDeleteReqDto inMylottoId) {
         String[] msg = { "Denied DELETE Access", "DELETE Complited", "NO Selected DELETE ITEM" };
         int result = mylottoService.deleteBylottoId(inMylottoId);
-        return new ResponseDto<>(result, msg[result], null);
+        return new ResponseDto<>(result, "200", msg[result]);
 
     }
 }

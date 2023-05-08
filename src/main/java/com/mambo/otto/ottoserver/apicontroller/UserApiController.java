@@ -42,22 +42,22 @@ public class UserApiController {
 
     @GetMapping("/user/{id}")
     public ResponseDto<?> findByUserId(@PathVariable(required = false) Long id) {
-        return new ResponseDto<>(1, "", uS.findByUserId(id));
+        return new ResponseDto<>(1, "200", uS.findByUserId(id));
     }
 
     @DeleteMapping("s/delete/{id}")
     public ResponseDto<?> deleteUser(@PathVariable(required = false) Long id) {
-        return new ResponseDto<>(1, "", uS.deleteUser(id));
+        return new ResponseDto<>(1, "200", uS.deleteUser(id));
     }
 
     @PutMapping("/s/update")
     public ResponseDto<?> updateUser(@RequestBody UserUpdateReqDto updateReqDto) {
-        return new ResponseDto<>(1, "", uS.updateUser(updateReqDto));
+        return new ResponseDto<>(1, "200", uS.updateUser(updateReqDto));
     }
 
     @GetMapping("/logout")
     public ResponseDto<?> logout() {
-        return new ResponseDto<>(1, "", uS.logout());
+        return new ResponseDto<>(1, "200", uS.logout());
     }
 
     @PostMapping("/join")

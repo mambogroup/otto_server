@@ -97,7 +97,6 @@ public class JwtAuthenticationFilter implements Filter {
                 .withClaim("phonenumber", userPS.getVcUserHpp())
                 .withClaim("userId", userPS.getInUserId())
                 .sign(Algorithm.HMAC512("맘보"));
-        log.debug("디버그 : " + jwtToken);
 
         SessionUser sessionUser = new SessionUser(User.builder().id(userPS.getInUserId()).build());
         HttpSession session = req.getSession();

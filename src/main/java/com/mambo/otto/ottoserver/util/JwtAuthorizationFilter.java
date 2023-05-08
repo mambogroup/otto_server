@@ -50,7 +50,7 @@ public class JwtAuthorizationFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
 
         String jwtToken = req.getHeader("Authorization");
-        log.debug("디버그토큰2 : " + jwtToken);
+        log.error("디버그토큰2 : " + jwtToken);
         if (jwtToken == null) {
             customResponse("JWT토큰이 없어서 인가할 수 없습니다.", resp);
             return;
@@ -58,9 +58,12 @@ public class JwtAuthorizationFilter implements Filter {
 
         jwtToken = jwtToken.replace("Bearer ", "");
 
+        log.error("디버깅 saefesf  : ");
         try {
             DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512("맘보")).build().verify(jwtToken);
+            log.debug("디버깅 테스트  : " + decodedJWT);
             Long userId = decodedJWT.getClaim("userId").asLong();// TODO : 핸들링 필요
+            log.error("디버깅 테스트  : " + userId);
             String phonenumber = decodedJWT.getClaim("phonenumber").asString();
             SessionUser sessionUser = new SessionUser(User.builder().id(userId).hpp(phonenumber).build());
             HttpSession session = req.getSession();
