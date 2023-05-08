@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  * AUTH : SW
  * FUNCTION : 권한이 필요한 메서드 수행 시 거치는 필터링
  * DATE : 2023.05.02
- * UPDATE( AUTH ) : -
+ * UPDATE( AUTH ) : 2023.05.08( SW )
  * 
  * <pre>
  * Request 의 header 에 토큰값을 해싱하여 메서드를 수행할 권한이 있는지 체크
