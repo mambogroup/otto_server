@@ -45,10 +45,9 @@ public class UserApiController {
         return new ResponseDto<>(1, "", uS.findByUserId(id));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("s/delete/{id}")
     public ResponseDto<?> deleteUser(@PathVariable(required = false) Long id) {
-        uS.deleteUser(id);
-        return new ResponseDto<>(1, "", null);
+        return new ResponseDto<>(1, "", uS.deleteUser(id));
     }
 
     @PutMapping("/s/update")
@@ -57,9 +56,8 @@ public class UserApiController {
     }
 
     @GetMapping("/logout")
-    public String logout() {
-        uS.logout();
-        return "redirect:/loginForm";
+    public ResponseDto<?> logout() {
+        return new ResponseDto<>(1, "", uS.logout());
     }
 
     @PostMapping("/join")

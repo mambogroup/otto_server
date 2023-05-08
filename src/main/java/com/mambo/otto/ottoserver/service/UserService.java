@@ -50,8 +50,19 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(Long id) {
-        uR.deleteBy(id);
+    public String deleteUser(Long id) {
+        if (!getSession().getId().equals(id)) {
+            return "다시 로그인하여 주십시오";
+        }
+        try {
+            uR.findByUserId(id).get();
+            uR.deleteBy(id);
+        } catch (Exception e) {
+            return "삭제할 수 없습니다.";
+        }
+        session.invalidate();
+        return "삭제 성고옹";
+
     }
 
     // TODO : 앱 연결 후 update 할 때 Requset Body 구성에 따라서 바꿔야 함
@@ -70,8 +81,9 @@ public class UserService {
         return 1;
     }
 
-    public void logout() {
+    public String logout() {
         session.invalidate();
+        return "로그아웃";
 
     }
 
