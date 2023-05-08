@@ -50,26 +50,29 @@ public class JwtAuthorizationFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
 
         String jwtToken = req.getHeader("Authorization");
-        log.error("디버그토큰2 : " + jwtToken);
         if (jwtToken == null) {
             customResponse("JWT토큰이 없어서 인가할 수 없습니다.", resp);
             return;
         }
 
-        jwtToken = jwtToken.replace("Bearer ", "");
+        SessionUser sUser = (SessionUser) req.getSession().getAttribute("sessionUser");
 
-        log.error("디버깅 saefesf  : ");
+        jwtToken = jwtToken.replace("Bearer ", "");
         try {
             DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512("맘보")).build().verify(jwtToken);
-            log.debug("디버깅 테스트  : " + decodedJWT);
-            Long userId = decodedJWT.getClaim("userId").asLong();// TODO : 핸들링 필요
-            log.error("디버깅 테스트  : " + userId);
+            Long userId = decodedJWT.getClaim("userId").asLong();
+            if (!sUser.getId().equals(userId)) {
+                customResponse("비정상적인 접근입니다", resp);
+                return;
+            }
             String phonenumber = decodedJWT.getClaim("phonenumber").asString();
             SessionUser sessionUser = new SessionUser(User.builder().id(userId).hpp(phonenumber).build());
             HttpSession session = req.getSession();
             session.setAttribute("sessionUser", sessionUser);
         } catch (Exception e) {
-            customResponse("토큰 검증 실패", resp);
+            // throw new RuntimeException("토큰 검증 실패" + resp);
+            customResponse("토큰 검증 실패", resp);// 핸들링 커스텀
+            return;
         }
 
         // 디스패쳐 서블릿 입장 혹은 Filter체인 타기

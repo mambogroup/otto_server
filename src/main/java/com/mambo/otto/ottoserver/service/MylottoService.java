@@ -39,7 +39,7 @@ public class MylottoService {
 
     @Transactional
     public MylottoSaveReqDto save(MylottoSaveReqDto mylotto) {
-        if (getSession() == null) {
+        if (getSession().getId() == null) {
             return null;
         }
 
@@ -55,8 +55,8 @@ public class MylottoService {
         return mylottos;
     }
 
-    public List<Mylotto> findByUserId() {
-        if (getSession() == null) {
+    public List<Mylotto> findByUserId(Long id) {
+        if (!getSession().getId().equals(id)) {
             return null;
         }
 

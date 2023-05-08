@@ -2,6 +2,7 @@ package com.mambo.otto.ottoserver.apicontroller;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,10 +38,10 @@ public class MylottoApiController {
         return new ResponseDto<>(1, "200", mylottoService.findAll());
     }
 
-    @GetMapping("/lotto")
-    public ResponseDto<?> findByUserId() {
+    @GetMapping("/lotto/{id}")
+    public ResponseDto<?> findByUserId(@PathVariable(required = false) Long id) {
         // find by Session data
-        return new ResponseDto<>(1, "200", mylottoService.findByUserId());
+        return new ResponseDto<>(1, "200", mylottoService.findByUserId(id));
     }
 
     @PostMapping("/s/mylotto")
