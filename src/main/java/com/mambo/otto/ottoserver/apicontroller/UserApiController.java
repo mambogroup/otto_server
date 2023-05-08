@@ -17,6 +17,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+/**
+ * AUTH : SW
+ * FUNCTION : Recieve Clients Request with JSON
+ * DATE : 2023.05.02
+ * UPDATE( AUTH ) : 2023.05.04( SW )
+ * 
+ * <pre>
+ * 사용자와 관련된 요청 관리 객체
+ * 
+ * login() : JwtAuthenticationFilter.java 에서 핸들링 {Exception 포함}
+ * </pre>
+ * 
+ * @PathVariable : needs get @RequestBody instead.
+ * @RequiredArgsConstructor : Dependency Injection.
+ * @return : ResponseDto code, message, data / Clients get JSON data.
+ */
+
 @RestController
 @RequiredArgsConstructor
 public class UserApiController {

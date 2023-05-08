@@ -18,6 +18,18 @@ import com.mambo.otto.ottoserver.util.SHA256;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * AUTH : SW
+ * FUNCTION : Any logics can serving here
+ * DATE : 2023.05.02
+ * UPDATE( AUTH ) : -
+ * 
+ * <pre>
+ * 비즈니스 로직 담당
+ * </pre>
+ * 
+ */
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -35,7 +47,6 @@ public class UserService {
         UserRespDto userDto = new UserRespDto(userPs);
 
         return userDto;
-
     }
 
     @Transactional
@@ -66,7 +77,6 @@ public class UserService {
 
     @Transactional
     public JoinRespDto save(UserJoinReqDto joinReqDto) {
-
         String encPhoneNum = sha256.encrypt(joinReqDto.getVcUserHpp());
 
         joinReqDto.setVcUserPhone(joinReqDto.getVcUserHpp());

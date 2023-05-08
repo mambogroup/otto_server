@@ -5,6 +5,18 @@ import com.mambo.otto.ottoserver.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * AUTH : SW
+ * FUNCTION : only can Access to Entity Object
+ * DATE : 2023.05.02
+ * UPDATE( AUTH ) : -
+ * 
+ * <pre>
+ * 클라이언트 요청 시 도메인의 엔티티 객체 대신 사용함
+ * </pre>
+ * 
+ * @toEntity : using for Convert to Object to querying
+ */
 public class UserReqDto {
 
     @Getter
@@ -20,9 +32,11 @@ public class UserReqDto {
         private String vcUserBirth;
         private String vcUserSex;
         private int inUserSignBy;
+        private String vcUserProfileImgurl = "https://png.pngtree.com/png-clipart/20190619/original/pngtree-profile-line-black-icon-png-image_4008155.jpg";
 
         public User toEntity() {
-            return User.builder().phone(vcUserPhone).username(vcUserName).email(vcUserEmail).nickname(vcUserNickname)
+            return User.builder().phone(vcUserPhone).username(vcUserName).email(vcUserEmail)
+                    .profileImgurl(vcUserProfileImgurl).nickname(vcUserNickname)
                     .hpp(vcUserHpp).birth(vcUserBirth).sex(vcUserSex).signBy(inUserSignBy).build();
         }
     }

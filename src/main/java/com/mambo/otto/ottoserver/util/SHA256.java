@@ -5,6 +5,20 @@ import java.security.NoSuchAlgorithmException;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * AUTH : SW
+ * FUNCTION : 암호화
+ * DATE : 2023.05.02
+ * UPDATE( AUTH ) : -
+ * 
+ * <pre>
+ * 데이터( String )를 받아 암호화 하는데 쓰임, PW
+ * </pre>
+ * 
+ * @/login : PostMapping method with the login values Flitering
+ * @/s : Flitering with that method values on any Controllers
+ */
+
 @Component
 public class SHA256 {
 

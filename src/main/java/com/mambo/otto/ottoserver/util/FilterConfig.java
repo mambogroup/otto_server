@@ -10,6 +10,21 @@ import com.mambo.otto.ottoserver.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * AUTH : SW
+ * FUNCTION : 컨트롤러에 [ login / s ] 키워드가 붙은 매핑을 필터링하여 JWT토큰 검증 하도록 함
+ * DATE : 2023.05.02
+ * UPDATE( AUTH ) : -
+ * 
+ * <pre>
+ * 런타임 핸들링
+ * </pre>
+ * 
+ * @/login : PostMapping method with the login values Flitering
+ * @/s : Flitering with that method values on any Controllers
+ * @Profile : ("dev"), follow the application.yml file
+ */
+
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
@@ -34,7 +49,7 @@ public class FilterConfig {
         log.debug("디버그 : 인가 필터 등록");
         FilterRegistrationBean<JwtAuthorizationFilter> bean = new FilterRegistrationBean<>(
                 new JwtAuthorizationFilter());
-        bean.addUrlPatterns("/s/*"); // 원래 두개인데, 이 친구만 예외
+        bean.addUrlPatterns("/s/*");
         bean.setOrder(2);
         return bean;
     }

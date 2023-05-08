@@ -15,6 +15,25 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * AUTH : SW
+ * FUNCTION : Entity, Syncing with MariaDB's Table name and Column name
+ * DATE : 2023.05.02
+ * UPDATE( AUTH ) : -
+ * 
+ * <pre>
+ * User 객체, MariaDB에서는 tbl_uesr로 사용중
+ * </pre>
+ * 
+ * @Setter : don't using for this Class, Look up the _
+ * @UserReqDto
+ * @GeneratedValue(strategy : PrimaryKey Column
+ * @Column : Checking for using Entity
+ * 
+ * @vc_user_hpp : for the Security, encrypt code from user_PhoneNumber
+ * @vc_user_phone : for the Formal, data from user_PhoneNumber
+ */
+
 @Getter
 @Entity
 @NoArgsConstructor
@@ -44,7 +63,7 @@ public class User {
     @Column(name = "vc_user_sex", nullable = false)
     private String vcUserSex;
     @Column(name = "vc_user_profile_img")
-    private String vcUserProfileImgurl = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/340px-Default_pfp.svg.png";
+    private String vcUserProfileImgurl;
     @CreationTimestamp
     @Column(name = "ts_user_joindate")
     private LocalDateTime tsUserJoindate;

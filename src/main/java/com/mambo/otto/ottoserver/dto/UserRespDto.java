@@ -5,6 +5,17 @@ import com.mambo.otto.ottoserver.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * AUTH : SW
+ * FUNCTION : only can Access to Entity Object
+ * DATE : 2023.05.02
+ * UPDATE( AUTH ) : -
+ * 
+ * <pre>
+ * 클라이언트 요청 시 도메인의 엔티티 객체 대신 사용함
+ * </pre>
+ */
+
 @Getter
 @Setter
 public class UserRespDto {

@@ -27,17 +27,33 @@ import com.mambo.otto.ottoserver.dto.UserReqDto.UserLoginReqDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * AUTH : SW
+ * FUNCTION : 클라이언트의 로그인 요청을 받은 것을 핸들링 하는 클래스
+ * DATE : 2023.05.02
+ * UPDATE( AUTH ) : -
+ * 
+ * <pre>
+ * DB의 유저 정보를 확인하고 유효한 사용자일 경우 로그인 처리와 JWT토큰을 발행하여 header로 반환
+ * 1. /login 요청시
+ * 2. post 요청시
+ * 3. username, password (json)
+ * 4. db확인
+ * 5. 토큰 생성
+ * </pre>
+ * 
+ * @exprie : 1000 * 60 * 60 = 1 hour
+ * @SHA256 : convert( encrypt ) the Input data to crypto code
+ * @secretkey : that needs to Verifying user's JWT TOKEN,
+ * @customJwtResponse : response with Header
+ */
+
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter implements Filter {
 
     private final UserRepository userRepository; // DI (FilterConfig 주입받음)
 
-    // /login 요청시
-    // post 요청시
-    // username, password (json)
-    // db확인
-    // 토큰 생성
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -73,7 +89,6 @@ public class JwtAuthenticationFilter implements Filter {
             return;
         }
 
-        // JWT토큰 생성 1초 = 1/1000 , 1000 * 60 * 60 = 1시간
         Date expire = new Date(System.currentTimeMillis() + (1000 * 60 * 60));
 
         String jwtToken = JWT.create()

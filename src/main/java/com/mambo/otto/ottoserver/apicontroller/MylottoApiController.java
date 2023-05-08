@@ -13,6 +13,20 @@ import com.mambo.otto.ottoserver.service.MylottoService;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * AUTH : SW
+ * FUNCTION : Recieve Clients Request with JSON
+ * DATE : 2023.05.02
+ * UPDATE( AUTH ) : 2023.05.04( SW )
+ * 
+ * <pre>
+ * Mylotto 객체 관련 요청 관리 컨트롤러
+ * </pre>
+ * 
+ * @JwtAuthorizationFilter : "/s/mylotto" Request Handling to Chencking Auth
+ * 
+ */
+
 @RestController
 @RequiredArgsConstructor
 public class MylottoApiController {

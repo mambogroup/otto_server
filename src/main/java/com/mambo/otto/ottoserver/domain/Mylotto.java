@@ -10,10 +10,23 @@ import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+/**
+ * AUTH : SW
+ * FUNCTION : Entity, Syncing with MariaDB's Table name and Column name
+ * DATE : 2023.05.02
+ * UPDATE( AUTH ) : -
+ * 
+ * <pre>
+ * Mylotto 객체, MariaDB에서는 tbl_mylotto로 사용중
+ * </pre>
+ * 
+ * @Setter : don't using for this Class, Look up the _
+ * @MylottoReqDto
+ * @GeneratedValue(strategy : PrimaryKey Column
+ */
 
 @Getter
-@Setter
 @Entity
 @Table(name = "tbl_mylotto")
 @NoArgsConstructor

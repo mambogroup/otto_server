@@ -24,6 +24,21 @@ import com.mambo.otto.ottoserver.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * AUTH : SW
+ * FUNCTION : 권한이 필요한 메서드 수행 시 거치는 필터링
+ * DATE : 2023.05.02
+ * UPDATE( AUTH ) : -
+ * 
+ * <pre>
+ * Request 의 header 에 토큰값을 해싱하여 메서드를 수행할 권한이 있는지 체크
+ * </pre>
+ * 
+ * @SHA256 : convert( encrypt ) the Input data to crypto code
+ * @secretkey : that needs to Verifying user's JWT TOKEN,
+ * @customJwtResponse : response with Header data
+ */
+
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter implements Filter {

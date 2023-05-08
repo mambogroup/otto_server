@@ -10,6 +10,23 @@ import com.mambo.otto.ottoserver.dto.UserReqDto.UserUpdateReqDto;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * AUTH : SW
+ * FUNCTION : Connection with DB and Querying / ! Transectional on Service.java
+ * DATE : 2023.05.02
+ * UPDATE( AUTH ) : -
+ * 
+ * <pre>
+ * 외부 서버 접근 레파지토리
+ * </pre>
+ * 
+ * @Optional : nullable querying has this Type
+ * @getResultList : Collection
+ * @getSingleResult : Single Object
+ * @executeUpdate : none return
+ * @createQuery : ("query", resultClass) / resultClass syncying Object
+ */
+
 @Repository
 @RequiredArgsConstructor
 public class UserRepository {

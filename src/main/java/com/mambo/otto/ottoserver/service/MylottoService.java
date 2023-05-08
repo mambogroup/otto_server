@@ -15,6 +15,18 @@ import com.mambo.otto.ottoserver.dto.MylottoReqDto.MylottoSaveReqDto;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * AUTH : SW
+ * FUNCTION : Any logics can serving here
+ * DATE : 2023.05.02
+ * UPDATE( AUTH ) : -
+ * 
+ * <pre>
+ * 비즈니스 로직 담당
+ * </pre>
+ * 
+ */
+
 @Service
 @RequiredArgsConstructor
 public class MylottoService {
