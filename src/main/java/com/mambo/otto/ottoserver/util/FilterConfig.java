@@ -54,4 +54,15 @@ public class FilterConfig {
         return bean;
     }
 
+    @Profile("dev")
+    @Bean
+    public FilterRegistrationBean<JwtAuthorizationAccessRegister> jwtAuthorizationAccessRegister() {
+        log.debug("디버그 : 사용자 인증/인가 필터 등록");
+        FilterRegistrationBean<JwtAuthorizationAccessRegister> bean = new FilterRegistrationBean<>(
+                new JwtAuthorizationAccessRegister(userRepository));
+        bean.addUrlPatterns("/join");
+        bean.setOrder(3);
+        return bean;
+    }
+
 }

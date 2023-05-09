@@ -11,10 +11,7 @@ import com.mambo.otto.ottoserver.domain.User;
 import com.mambo.otto.ottoserver.domain.UserRepository;
 import com.mambo.otto.ottoserver.dto.SessionUser;
 import com.mambo.otto.ottoserver.dto.UserRespDto;
-import com.mambo.otto.ottoserver.dto.UserReqDto.UserJoinReqDto;
 import com.mambo.otto.ottoserver.dto.UserReqDto.UserUpdateReqDto;
-import com.mambo.otto.ottoserver.dto.UserRespDto.JoinRespDto;
-import com.mambo.otto.ottoserver.util.SHA256;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,7 +32,6 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
     private final UserRepository uR;
-    private final SHA256 sha256;
     private final HttpSession session;
 
     private SessionUser getSession() {
@@ -87,17 +83,18 @@ public class UserService {
 
     }
 
-    @Transactional
-    public JoinRespDto save(UserJoinReqDto joinReqDto) {
-        String encPhoneNum = sha256.encrypt(joinReqDto.getVcUserHpp());
+    // @Transactional
+    // public JoinRespDto save(UserJoinReqDto joinReqDto) {
+    // String encPhoneNum = sha256.encrypt(joinReqDto.getVcUserHpp());
 
-        joinReqDto.setVcUserPhone(joinReqDto.getVcUserHpp());
-        joinReqDto.setVcUserHpp(encPhoneNum);
+    // joinReqDto.setVcUserPhone(joinReqDto.getVcUserHpp());
+    // joinReqDto.setVcUserHpp(encPhoneNum);
+    // joinReqDto.setVcUserNickname(joinReqDto.getVcUserName());
 
-        User userPs = uR.save(joinReqDto.toEntity());
+    // User userPs = uR.save(joinReqDto.toEntity());
 
-        return new JoinRespDto(userPs);
-    }
+    // return new JoinRespDto(userPs);
+    // }
 
     // @Transactional()
     // public SessionUser login(UserLoginReqDto userLoginReqDto) {

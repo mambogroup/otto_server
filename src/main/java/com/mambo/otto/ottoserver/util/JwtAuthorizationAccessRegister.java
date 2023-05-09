@@ -22,15 +22,15 @@ import com.mambo.otto.ottoserver.domain.User;
 import com.mambo.otto.ottoserver.domain.UserRepository;
 import com.mambo.otto.ottoserver.dto.ResponseDto;
 import com.mambo.otto.ottoserver.dto.SessionUser;
-import com.mambo.otto.ottoserver.dto.UserReqDto.UserLoginReqDto;
+import com.mambo.otto.ottoserver.dto.UserReqDto.UserJoinReqDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * AUTH : SW
- * FUNCTION : 클라이언트의 로그인 요청을 받은 것을 핸들링 하는 클래스
- * DATE : 2023.05.02
+ * FUNCTION : 회원가입을 하면서 바로 로그인이 가능하게끔 하는 로직
+ * DATE : 2023.05.09
  * UPDATE( AUTH ) : -
  * 
  * <pre>
@@ -50,7 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter implements Filter {
+public class JwtAuthorizationAccessRegister implements Filter {
 
     private final UserRepository userRepository; // DI (FilterConfig 주입받음)
 
@@ -61,30 +61,31 @@ public class JwtAuthenticationFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
 
         if (!req.getMethod().equals("POST")) {
-            customResponse("로그인시에는 post요청을 해야 합니다.", resp);
+            customResponse("회원가입 시 post요청을 해야 합니다.", resp);
             return;
         }
 
         ObjectMapper om = new ObjectMapper();
-        UserLoginReqDto loginReqDto = om.readValue(req.getInputStream(), UserLoginReqDto.class);
-        log.debug("디버그 : " + loginReqDto.getVcUserHpp());
+        UserJoinReqDto joinReqDto = om.readValue(req.getInputStream(), UserJoinReqDto.class);
+        log.debug("디버그 : " + joinReqDto.getVcUserHpp());
 
         SHA256 sh = new SHA256();
-        String encPhoneNum = sh.encrypt(loginReqDto.getVcUserHpp());
-        loginReqDto.setVcUserHpp(encPhoneNum);
+        String encPhoneNum = sh.encrypt(joinReqDto.getVcUserHpp());
+        joinReqDto.setVcUserPhone(joinReqDto.getVcUserHpp());
+        joinReqDto.setVcUserHpp(encPhoneNum);
+        joinReqDto.setVcUserNickname(joinReqDto.getVcUserName());
 
-        Optional<User> userOP = userRepository.findByUserPhoneNumber(loginReqDto.getVcUserHpp());
+        userRepository.save(joinReqDto.toEntity());
+
+        // 유저네임 있는지 체크
+        Optional<User> userOP = userRepository.findByUserPhoneNumber(joinReqDto.getVcUserHpp());
 
         if (userOP.isEmpty()) {
-            customResponse("입력하신 번호는 서비스에 등록되어있지 않습니다.", resp);
+            customResponse("회원가입이 정상적으로 처리되지 않았습니다.", resp);
             return;
         }
 
         User userPS = userOP.get();
-        if (!userPS.getVcUserHpp().equals(encPhoneNum)) {
-            customResponse("번호를 다시 확인해 주십시오", resp);
-            return;
-        }
 
         Date expire = new Date(System.currentTimeMillis() + (1000 * 60 * 60));
 
@@ -101,7 +102,6 @@ public class JwtAuthenticationFilter implements Filter {
 
         customJwtResponse(jwtToken, userPS, resp);
 
-        // chain.doFilter(req, resp);
     }
 
     private void customJwtResponse(String token, User userPS, HttpServletResponse resp)
@@ -110,7 +110,7 @@ public class JwtAuthenticationFilter implements Filter {
         resp.setHeader("Authorization", "Bearer " + token);
         PrintWriter out = resp.getWriter();
         resp.setStatus(200);
-        ResponseDto<?> responseDto = new ResponseDto<>(1, "성공", new SessionUser(userPS));
+        ResponseDto<?> responseDto = new ResponseDto<>(1, "200", new SessionUser(userPS));
         ObjectMapper om = new ObjectMapper();
         String body = om.writeValueAsString(responseDto);
         out.println(body);

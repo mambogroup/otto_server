@@ -3,6 +3,7 @@ package com.mambo.otto.ottoserver.domain;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
@@ -31,7 +32,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserRepository {
     private final EntityManager eM;
+    public Object save;
 
+    @Transactional
     public User save(User user) {
         eM.persist(user);
         return user;

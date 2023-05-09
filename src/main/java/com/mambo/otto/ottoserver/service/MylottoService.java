@@ -56,11 +56,16 @@ public class MylottoService {
     }
 
     public List<Mylotto> findByUserId(Long id) {
-        if (!getSession().getId().equals(id)) {
+
+        try {
+            if (!getSession().getId().equals(id)) {
+                return null;
+            }
+            return mylottoRepository.findByUserId(getSession().getId());
+        } catch (Exception e) {
             return null;
         }
 
-        return mylottoRepository.findByUserId(getSession().getId());
     }
 
     @Transactional

@@ -22,7 +22,6 @@ import com.mambo.otto.ottoserver.dto.ResponseDto;
 import com.mambo.otto.ottoserver.dto.SessionUser;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * AUTH : SW
@@ -39,7 +38,6 @@ import lombok.extern.slf4j.Slf4j;
  * @customJwtResponse : response with Header data
  */
 
-@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter implements Filter {
 
@@ -56,7 +54,7 @@ public class JwtAuthorizationFilter implements Filter {
         }
 
         jwtToken = jwtToken.replace("Bearer ", "");
-        try {
+        try {// TODO : 시크릿값 보안파일로 관리 필요
             DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512("맘보")).build().verify(jwtToken);
             Long userId = decodedJWT.getClaim("userId").asLong();
             String phonenumber = decodedJWT.getClaim("phonenumber").asString();
@@ -64,12 +62,10 @@ public class JwtAuthorizationFilter implements Filter {
             HttpSession session = req.getSession();
             session.setAttribute("sessionUser", sessionUser);
         } catch (Exception e) {
-            // throw new RuntimeException("토큰 검증 실패" + resp);
             customResponse("토큰 검증 실패", resp);// 핸들링 커스텀
             return;
         }
 
-        // 디스패쳐 서블릿 입장 혹은 Filter체인 타기
         chain.doFilter(req, resp);
     }
 
