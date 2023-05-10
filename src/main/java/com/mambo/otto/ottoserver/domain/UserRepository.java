@@ -53,6 +53,20 @@ public class UserRepository {
         }
     }
 
+    public Optional<User> findByNameBirth(String name, String birth) {
+        try {
+            Optional<User> userOp = Optional.of(eM.createQuery(
+                    "select u from User u where u.vcUserName=:name and u.vcUserBirth=:birth",
+                    User.class)
+                    .setParameter("name", name)
+                    .setParameter("birth", birth)
+                    .getSingleResult());
+            return userOp;
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
     public Optional<User> findByUserId(Long id) {
         try {
             Optional<User> userOp = Optional.of(eM.createQuery(

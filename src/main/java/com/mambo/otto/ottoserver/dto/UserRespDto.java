@@ -24,8 +24,8 @@ public class UserRespDto {
     private String vcUserNickname;
     private String vcUserEmail;
     private String vcUserPhone;
-    private String vcUsrProfileImgUrl;
-    private String vcUesrBirth;
+    private String vcUserProfileImgUrl;
+    private String vcUserBirth;
     private String vcUserSex;
 
     public UserRespDto(User user) {
@@ -34,8 +34,8 @@ public class UserRespDto {
         this.vcUserNickname = user.getVcUserNickname();
         this.vcUserEmail = user.getVcUserEmail();
         this.vcUserPhone = user.getVcUserPhone();
-        this.vcUsrProfileImgUrl = user.getVcUserProfileImgurl();
-        this.vcUesrBirth = user.getVcUserBirth();
+        this.vcUserProfileImgUrl = user.getVcUserProfileImgurl();
+        this.vcUserBirth = user.getVcUserBirth();
         this.vcUserSex = user.getVcUserSex();
     }
 

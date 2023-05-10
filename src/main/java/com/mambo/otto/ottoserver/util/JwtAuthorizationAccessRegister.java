@@ -22,6 +22,7 @@ import com.mambo.otto.ottoserver.domain.User;
 import com.mambo.otto.ottoserver.domain.UserRepository;
 import com.mambo.otto.ottoserver.dto.ResponseDto;
 import com.mambo.otto.ottoserver.dto.SessionUser;
+import com.mambo.otto.ottoserver.dto.UserRespDto;
 import com.mambo.otto.ottoserver.dto.UserReqDto.UserJoinReqDto;
 
 import lombok.RequiredArgsConstructor;
@@ -39,8 +40,11 @@ import lombok.extern.slf4j.Slf4j;
  * 2. post 요청시
  * 3. username, password (json)
  * 4. db확인
- * 5. 토큰 생성
+ * 5. 회원가입 처리
+ * 6. 토큰 생성
  * </pre>
+ * 
+ * @설명 : <회원가입 동시에 로그인, >
  * 
  * @exprie : 1000 * 60 * 60 = 1 hour
  * @SHA256 : convert( encrypt ) the Input data to crypto code
@@ -75,17 +79,19 @@ public class JwtAuthorizationAccessRegister implements Filter {
         joinReqDto.setVcUserHpp(encPhoneNum);
         joinReqDto.setVcUserNickname(joinReqDto.getVcUserName());
 
-        userRepository.save(joinReqDto.toEntity());
-
         // 유저네임 있는지 체크
-        Optional<User> userOP = userRepository.findByUserPhoneNumber(joinReqDto.getVcUserHpp());
+        Optional<User> userOP1 = userRepository.findByUserPhoneNumber(joinReqDto.getVcUserHpp());
+        Optional<User> userOP2 = userRepository.findByNameBirth(joinReqDto.getVcUserName(),
+                joinReqDto.getVcUserBirth());
 
-        if (userOP.isEmpty()) {
-            customResponse("회원가입이 정상적으로 처리되지 않았습니다.", resp);
-            return;
+        if (userOP1.isEmpty()) {
+            if (userOP2.isEmpty()) {
+                userRepository.save(joinReqDto.toEntity());
+                userOP1 = userRepository.findByUserPhoneNumber(joinReqDto.getVcUserHpp());
+            }
         }
 
-        User userPS = userOP.get();
+        User userPS = userOP1.get();
 
         Date expire = new Date(System.currentTimeMillis() + (1000 * 60 * 60));
 
@@ -100,17 +106,19 @@ public class JwtAuthorizationAccessRegister implements Filter {
         HttpSession session = req.getSession();
         session.setAttribute("sessionUser", sessionUser);
 
-        customJwtResponse(jwtToken, userPS, resp);
+        UserRespDto userRespDto = new UserRespDto(userOP1.get());
+
+        customJwtResponse(jwtToken, userRespDto, resp);
 
     }
 
-    private void customJwtResponse(String token, User userPS, HttpServletResponse resp)
+    private void customJwtResponse(String token, UserRespDto userPS, HttpServletResponse resp)
             throws IOException, JsonProcessingException {
         resp.setContentType("application/json; charset=utf-8");
         resp.setHeader("Authorization", "Bearer " + token);
         PrintWriter out = resp.getWriter();
         resp.setStatus(200);
-        ResponseDto<?> responseDto = new ResponseDto<>(1, "200", new SessionUser(userPS));
+        ResponseDto<?> responseDto = new ResponseDto<>(1, "200", userPS);
         ObjectMapper om = new ObjectMapper();
         String body = om.writeValueAsString(responseDto);
         out.println(body);
