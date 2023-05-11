@@ -15,7 +15,7 @@ public class ShopApiController {
 
     @GetMapping("/shop")
     public ResponseDto<?> findAll() {
-        return new ResponseDto<>(1, "200", sS.findAll());
+        return new ResponseDto<>(200, "판매점을 모두 찾았습니다", sS.findAll());
     }
 
 }

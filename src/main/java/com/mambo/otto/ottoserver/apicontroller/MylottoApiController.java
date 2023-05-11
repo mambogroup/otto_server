@@ -39,7 +39,7 @@ public class MylottoApiController {
 
     @GetMapping("/lottos")
     public ResponseDto<?> findAll() {
-        return new ResponseDto<>(1, "200", mylottoService.findAll());
+        return new ResponseDto<>(200, "모든 번호 정보를 찾았습니다", mylottoService.findAll());
     }
 
     @GetMapping("/lotto/{id}")
@@ -47,23 +47,23 @@ public class MylottoApiController {
         // find by Session data
         List<Mylotto> mylottoList = mylottoService.findByUserId(id);
         if (mylottoList == null) {
-            return new ResponseDto<>(-1, "400", "로그인 정보가 정확하지 않습니다 다시 로그인 해주십시오");
+            return new ResponseDto<>(-1, "로그인 정보가 정확하지 않습니다 다시 로그인 해주십시오", null);
         }
 
-        return new ResponseDto<>(1, "200", mylottoList);
+        return new ResponseDto<>(200, "번호 찾음", mylottoList);
     }
 
     @PostMapping("/s/mylotto")
     public ResponseDto<?> save(@RequestBody MylottoSaveReqDto mylotto) {
         mylottoService.save(mylotto);
-        return new ResponseDto<>(1, "200", mylotto);
+        return new ResponseDto<>(200, "정상적으로 저장이 되었습니다", mylotto);
     }
 
     @DeleteMapping("/s/d-mylotto")
     public ResponseDto<?> delete(@RequestBody MylottoDeleteReqDto inMylottoId) {
         String[] msg = { "Denied DELETE Access", "DELETE Complited", "NO Selected DELETE ITEM" };
         int result = mylottoService.deleteBylottoId(inMylottoId);
-        return new ResponseDto<>(result, "200", msg[result]);
+        return new ResponseDto<>(result, msg[result], null);
 
     }
 }

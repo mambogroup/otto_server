@@ -41,22 +41,22 @@ public class UserApiController {
 
     @GetMapping("/user/{id}")
     public ResponseDto<?> findByUserId(@PathVariable(required = false) Long id) {
-        return new ResponseDto<>(1, "200", uS.findByUserId(id));
+        return new ResponseDto<>(200, "사용자의 PK로 정보를 찾았습니다", uS.findByUserId(id));
     }
 
     @DeleteMapping("s/delete/{id}")
     public ResponseDto<?> deleteUser(@PathVariable(required = false) Long id) {
-        return new ResponseDto<>(1, "200", uS.deleteUser(id));
+        return new ResponseDto<>(200, "PK로 사용자 탈퇴가 성공적으로 이루어졌습니다", uS.deleteUser(id));
     }
 
     @PutMapping("/s/update")
     public ResponseDto<?> updateUser(@RequestBody UserUpdateReqDto updateReqDto) {
-        return new ResponseDto<>(1, "200", uS.updateUser(updateReqDto));
+        return new ResponseDto<>(200, "사용자 정보를 변경하였습니다", uS.updateUser(updateReqDto));
     }
 
     @GetMapping("/logout")
     public ResponseDto<?> logout() {
-        return new ResponseDto<>(1, "200", uS.logout());
+        return new ResponseDto<>(200, "정상적으로 로그아웃 되었습니다", uS.logout());
     }
 
     // @PostMapping("/join")

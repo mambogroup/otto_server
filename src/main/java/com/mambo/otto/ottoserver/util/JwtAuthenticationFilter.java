@@ -110,7 +110,7 @@ public class JwtAuthenticationFilter implements Filter {
         resp.setHeader("Authorization", "Bearer " + token);
         PrintWriter out = resp.getWriter();
         resp.setStatus(200);
-        ResponseDto<?> responseDto = new ResponseDto<>(1, "성공", new SessionUser(userPS));
+        ResponseDto<?> responseDto = new ResponseDto<>(200, "정상적으로 로그인이 되었습니다", new SessionUser(userPS));
         ObjectMapper om = new ObjectMapper();
         String body = om.writeValueAsString(responseDto);
         out.println(body);

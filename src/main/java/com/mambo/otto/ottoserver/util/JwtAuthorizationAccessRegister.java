@@ -118,7 +118,7 @@ public class JwtAuthorizationAccessRegister implements Filter {
         resp.setHeader("Authorization", "Bearer " + token);
         PrintWriter out = resp.getWriter();
         resp.setStatus(200);
-        ResponseDto<?> responseDto = new ResponseDto<>(1, "200", userPS);
+        ResponseDto<?> responseDto = new ResponseDto<>(200, "회원가입 후 로그인이 정상적으로 되었습니다", userPS);
         ObjectMapper om = new ObjectMapper();
         String body = om.writeValueAsString(responseDto);
         out.println(body);

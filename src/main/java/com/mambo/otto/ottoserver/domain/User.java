@@ -48,7 +48,7 @@ public class User {
     // private String vcUserUid;
     @Column(name = "vc_user_name", unique = true, nullable = false)
     private String vcUserName;
-    @Column(name = "vc_user_email", unique = true, nullable = false)
+    @Column(name = "vc_user_email", unique = true)
     private String vcUserEmail;
     // @Column(name = "vc_user_password", nullable = false)
     // private String vcUserPassword;
