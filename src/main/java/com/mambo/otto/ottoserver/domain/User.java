@@ -46,7 +46,7 @@ public class User {
     private Long inUserId;
     // @Column(name = "vc_user_uid", unique = true, nullable = false)
     // private String vcUserUid;
-    @Column(name = "vc_user_name", unique = true, nullable = false)
+    @Column(name = "vc_user_name", nullable = false)
     private String vcUserName;
     @Column(name = "vc_user_email", unique = true)
     private String vcUserEmail;
@@ -70,7 +70,7 @@ public class User {
     @Column(name = "ts_user_leave")
     private LocalDateTime tsUserLeave;
     @Column(name = "in_user_state", nullable = false)
-    private int inUserState = 0; // default 0:활동중
+    private int inUserState;
     @Column(name = "in_user_sign_by")
     private int inUserSignBy;
 

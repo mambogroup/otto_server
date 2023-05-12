@@ -39,7 +39,7 @@ public class UserService {
     }
 
     public UserRespDto findByUserId(Long id) {
-        User userPs = uR.findByUserId(id).get();
+        User userPs = uR.findByUserId(id).orElseThrow(() -> new RuntimeException("로그인 정보 확인 불가"));
         UserRespDto userDto = new UserRespDto(userPs);
 
         return userDto;
@@ -68,10 +68,10 @@ public class UserService {
             return null;
 
         }
-        Optional<User> userOp = uR.findByUserId(updateReqDto.getInUserId());
-        userOp.orElseThrow(() -> new RuntimeException("잘못된 접근입니다."));
 
-        uR.update(updateReqDto);
+        uR.update(updateReqDto.toEntity());
+
+        Optional<User> userOp = uR.findByUserId(updateReqDto.getInUserId());
 
         UserRespDto userRespDto = new UserRespDto(userOp.get());
         return userRespDto;

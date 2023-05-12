@@ -7,8 +7,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
-import com.mambo.otto.ottoserver.dto.UserReqDto.UserUpdateReqDto;
-
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -80,7 +78,7 @@ public class UserRepository {
         }
     }
 
-    public void update(UserUpdateReqDto user) {
+    public void update(User user) {
 
         eM.createQuery(
                 "update User u set u.vcUserEmail =:vcUserEmail where inUserId = :id")

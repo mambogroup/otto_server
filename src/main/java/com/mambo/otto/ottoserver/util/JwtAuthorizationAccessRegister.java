@@ -2,7 +2,6 @@ package com.mambo.otto.ottoserver.util;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.util.Optional;
 
 import javax.servlet.Filter;
@@ -14,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mambo.otto.ottoserver.domain.User;
@@ -24,6 +21,7 @@ import com.mambo.otto.ottoserver.dto.ResponseDto;
 import com.mambo.otto.ottoserver.dto.SessionUser;
 import com.mambo.otto.ottoserver.dto.UserRespDto;
 import com.mambo.otto.ottoserver.dto.UserReqDto.UserJoinReqDto;
+import com.mambo.otto.ottoserver.util.jwt.JwtProcess;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  * AUTH : SW
  * FUNCTION : 회원가입을 하면서 바로 로그인이 가능하게끔 하는 로직
  * DATE : 2023.05.09
- * UPDATE( AUTH ) : -
+ * UPDATE( AUTH ), msg : 2023.05.15( SW ), 토큰 생성 메서드 리팩터링
  * 
  * <pre>
  * DB의 유저 정보를 확인하고 유효한 사용자일 경우 로그인 처리와 JWT토큰을 발행하여 header로 반환
@@ -46,9 +44,7 @@ import lombok.extern.slf4j.Slf4j;
  * 
  * @설명 : <회원가입 동시에 로그인, >
  * 
- * @exprie : 1000 * 60 * 60 = 1 hour
  * @SHA256 : convert( encrypt ) the Input data to crypto code
- * @secretkey : that needs to Verifying user's JWT TOKEN,
  * @customJwtResponse : response with Header
  */
 
@@ -77,9 +73,12 @@ public class JwtAuthorizationAccessRegister implements Filter {
         String encPhoneNum = sh.encrypt(joinReqDto.getVcUserHpp());
         joinReqDto.setVcUserPhone(joinReqDto.getVcUserHpp());
         joinReqDto.setVcUserHpp(encPhoneNum);
-        joinReqDto.setVcUserNickname(joinReqDto.getVcUserName());
+        if (joinReqDto.getVcUserNickname().isEmpty()) {
+            joinReqDto.setVcUserNickname(joinReqDto.getVcUserName());
+        }
 
         // 유저네임 있는지 체크
+        // TODO : User 객체 변경 필요
         Optional<User> userOP1 = userRepository.findByUserPhoneNumber(joinReqDto.getVcUserHpp());
         Optional<User> userOP2 = userRepository.findByNameBirth(joinReqDto.getVcUserName(),
                 joinReqDto.getVcUserBirth());
@@ -93,14 +92,7 @@ public class JwtAuthorizationAccessRegister implements Filter {
 
         User userPS = userOP1.get();
 
-        Date expire = new Date(System.currentTimeMillis() + (1000 * 60 * 60));
-
-        String jwtToken = JWT.create()
-                .withSubject("맘보오또로또")
-                .withExpiresAt(expire)
-                .withClaim("phonenumber", userPS.getVcUserHpp())
-                .withClaim("userId", userPS.getInUserId())
-                .sign(Algorithm.HMAC512("맘보")); // TODO : 시크릿값 보안파일로 관리 필요
+        String jwtToken = JwtProcess.create(userPS);
 
         SessionUser sessionUser = new SessionUser(User.builder().id(userPS.getInUserId()).build());
         HttpSession session = req.getSession();

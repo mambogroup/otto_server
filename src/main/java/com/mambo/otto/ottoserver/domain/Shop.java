@@ -19,12 +19,12 @@ import lombok.NoArgsConstructor;
  * 작성일자 기준, 랭크에 관한 컬럼은 없음
  * </pre>
  * 
- * @Id : AutoIncreament 걸지 않음,
+ * @Id : AutoIncreament 걸지 않음, 클라이언트에서 DB입력이 있을 일이 없음.
  */
 
 @Getter
 @Entity
-@Table(name = "tbl_shop")
+// @Table(name = "tbl_shop")
 @NoArgsConstructor
 public class Shop {
 

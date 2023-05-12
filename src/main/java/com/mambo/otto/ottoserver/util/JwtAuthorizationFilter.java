@@ -54,8 +54,10 @@ public class JwtAuthorizationFilter implements Filter {
         }
 
         jwtToken = jwtToken.replace("Bearer ", "");
-        try {// TODO : 시크릿값 보안파일로 관리 필요
+        try {
             DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512("맘보")).build().verify(jwtToken);
+            System.out.println("1");
+            System.out.println("2");
             Long userId = decodedJWT.getClaim("userId").asLong();
             String phonenumber = decodedJWT.getClaim("phonenumber").asString();
             SessionUser sessionUser = new SessionUser(User.builder().id(userId).hpp(phonenumber).build());

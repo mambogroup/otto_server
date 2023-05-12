@@ -33,11 +33,12 @@ public class UserReqDto {
         private String vcUserSex;
         private int inUserSignBy;
         private String vcUserProfileImgurl = "https://png.pngtree.com/png-clipart/20190619/original/pngtree-profile-line-black-icon-png-image_4008155.jpg";
+        private int inUserState;
 
         public User toEntity() {
             return User.builder().phone(vcUserPhone).username(vcUserName).email(vcUserEmail)
                     .profileImgurl(vcUserProfileImgurl).nickname(vcUserNickname)
-                    .hpp(vcUserHpp).birth(vcUserBirth).sex(vcUserSex).signBy(inUserSignBy).build();
+                    .hpp(vcUserHpp).birth(vcUserBirth).sex(vcUserSex).signBy(inUserSignBy).state(inUserState).build();
         }
     }
 

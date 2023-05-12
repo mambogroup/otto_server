@@ -3,6 +3,7 @@ package com.mambo.otto.ottoserver.apicontroller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mambo.otto.ottoserver.dto.ResponseDto;
+import com.mambo.otto.ottoserver.dto.UserRespDto;
 import com.mambo.otto.ottoserver.dto.UserReqDto.UserUpdateReqDto;
 import com.mambo.otto.ottoserver.service.UserService;
 
@@ -51,7 +52,12 @@ public class UserApiController {
 
     @PutMapping("/s/update")
     public ResponseDto<?> updateUser(@RequestBody UserUpdateReqDto updateReqDto) {
-        return new ResponseDto<>(200, "사용자 정보를 변경하였습니다", uS.updateUser(updateReqDto));
+        UserRespDto userPs = uS.updateUser(updateReqDto);
+        if (userPs == null) {
+            return new ResponseDto<>(200, "정상적으로 업데이트되지 않았습니다", null);
+        }
+
+        return new ResponseDto<>(200, "사용자 정보를 변경하였습니다", userPs);
     }
 
     @GetMapping("/logout")

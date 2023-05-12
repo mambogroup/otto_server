@@ -2,7 +2,6 @@ package com.mambo.otto.ottoserver.util;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.util.Optional;
 
 import javax.servlet.Filter;
@@ -14,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mambo.otto.ottoserver.domain.User;
@@ -23,6 +20,7 @@ import com.mambo.otto.ottoserver.domain.UserRepository;
 import com.mambo.otto.ottoserver.dto.ResponseDto;
 import com.mambo.otto.ottoserver.dto.SessionUser;
 import com.mambo.otto.ottoserver.dto.UserReqDto.UserLoginReqDto;
+import com.mambo.otto.ottoserver.util.jwt.JwtProcess;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,20 +29,15 @@ import lombok.extern.slf4j.Slf4j;
  * AUTH : SW
  * FUNCTION : 클라이언트의 로그인 요청을 받은 것을 핸들링 하는 클래스
  * DATE : 2023.05.02
- * UPDATE( AUTH ) : -
+ * UPDATE( AUTH ), msg : 2023.05.15( SW ), 토큰 생성 메서드 리팩터링
  * 
  * <pre>
- * DB의 유저 정보를 확인하고 유효한 사용자일 경우 로그인 처리와 JWT토큰을 발행하여 header로 반환
- * 1. /login 요청시
- * 2. post 요청시
- * 3. username, password (json)
- * 4. db확인
- * 5. 토큰 생성
+ * !!!
+ * @JwtAuthorizationAccessRegister 로 대체
+ * !!!
  * </pre>
  * 
- * @exprie : 1000 * 60 * 60 = 1 hour
  * @SHA256 : convert( encrypt ) the Input data to crypto code
- * @secretkey : that needs to Verifying user's JWT TOKEN,
  * @customJwtResponse : response with Header
  */
 
@@ -73,12 +66,8 @@ public class JwtAuthenticationFilter implements Filter {
         String encPhoneNum = sh.encrypt(loginReqDto.getVcUserHpp());
         loginReqDto.setVcUserHpp(encPhoneNum);
 
+        // TODO : User 객체 변경 필요
         Optional<User> userOP = userRepository.findByUserPhoneNumber(loginReqDto.getVcUserHpp());
-
-        if (userOP.isEmpty()) {
-            customResponse("입력하신 번호는 서비스에 등록되어있지 않습니다.", resp);
-            return;
-        }
 
         User userPS = userOP.get();
         if (!userPS.getVcUserHpp().equals(encPhoneNum)) {
@@ -86,14 +75,7 @@ public class JwtAuthenticationFilter implements Filter {
             return;
         }
 
-        Date expire = new Date(System.currentTimeMillis() + (1000 * 60 * 60));
-
-        String jwtToken = JWT.create()
-                .withSubject("맘보오또로또")
-                .withExpiresAt(expire)
-                .withClaim("phonenumber", userPS.getVcUserHpp())
-                .withClaim("userId", userPS.getInUserId())
-                .sign(Algorithm.HMAC512("맘보")); // TODO : 시크릿값 보안파일로 관리 필요
+        String jwtToken = JwtProcess.create(userPS);
 
         SessionUser sessionUser = new SessionUser(User.builder().id(userPS.getInUserId()).build());
         HttpSession session = req.getSession();
