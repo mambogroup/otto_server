@@ -2,9 +2,11 @@ package com.mambo.otto.ottoserver.service;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.mambo.otto.ottoserver.domain.User;
@@ -12,6 +14,9 @@ import com.mambo.otto.ottoserver.domain.UserRepository;
 import com.mambo.otto.ottoserver.dto.SessionUser;
 import com.mambo.otto.ottoserver.dto.UserRespDto;
 import com.mambo.otto.ottoserver.dto.UserReqDto.UserUpdateReqDto;
+import com.mambo.otto.ottoserver.util.exception.CustomApiException;
+import com.mambo.otto.ottoserver.util.jwt.JwtProcess;
+import com.mambo.otto.ottoserver.util.jwt.JwtProps;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,6 +41,22 @@ public class UserService {
 
     private SessionUser getSession() {
         return (SessionUser) session.getAttribute("sessionUser");
+    }
+
+    public UserRespDto enterToken(HttpServletRequest request) {
+        String jwtToken = request.getHeader("authorization");
+        if (jwtToken == null) {
+            throw new CustomApiException("토큰이 헤더에 없습니다.", HttpStatus.ACCEPTED);
+        }
+        System.out.println("토큰이 헤더 있습니다." + jwtToken);
+        jwtToken = jwtToken.replace(JwtProps.AUTH, "");
+
+        Long userId = JwtProcess.verify(jwtToken);
+        System.out.println("아이디가 있는지 봐야겠소 ," + userId);
+        User userPS = uR.findByUserId(userId)
+                .orElseThrow(() -> new CustomApiException("토큰 검증 실패", HttpStatus.ACCEPTED));
+        System.out.println("아이디가 있는지 봐야겠소 ," + userPS.getVcUserName());
+        return new UserRespDto(userPS);
     }
 
     public UserRespDto findByUserId(Long id) {

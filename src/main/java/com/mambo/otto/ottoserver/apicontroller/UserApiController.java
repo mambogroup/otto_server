@@ -8,6 +8,9 @@ import com.mambo.otto.ottoserver.dto.UserReqDto.UserUpdateReqDto;
 import com.mambo.otto.ottoserver.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,9 +39,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class UserApiController {
 
     private final UserService uS;
+
+    @GetMapping("/jwtToken")
+    public ResponseDto<?> jwtToken(HttpServletRequest request) {
+        UserRespDto userPS = uS.enterToken(request);
+        log.debug("정신이 나갈 거 ㅅ같아ㅓ 요롱ㄴ론ㅁㄷ료 " + userPS.getVcUserName());
+        return new ResponseDto<>(200, request.getHeader("authorization"), userPS);
+    }
 
     @GetMapping("/user/{id}")
     public ResponseDto<?> findByUserId(@PathVariable(required = false) Long id) {
