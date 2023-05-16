@@ -14,6 +14,7 @@ import com.mambo.otto.ottoserver.domain.UserRepository;
 import com.mambo.otto.ottoserver.dto.SessionUser;
 import com.mambo.otto.ottoserver.dto.UserRespDto;
 import com.mambo.otto.ottoserver.dto.UserReqDto.UserUpdateReqDto;
+import com.mambo.otto.ottoserver.dto.UserRespDto.TokenLoginRespDto;
 import com.mambo.otto.ottoserver.util.exception.CustomApiException;
 import com.mambo.otto.ottoserver.util.jwt.JwtProcess;
 import com.mambo.otto.ottoserver.util.jwt.JwtProps;
@@ -30,6 +31,7 @@ import lombok.RequiredArgsConstructor;
  * 비즈니스 로직 담당
  * </pre>
  * 
+ * @enterToken : 자동로그인 요청 시 아예 토큰을 재 발행 하면서, 토큰 기간 연장
  */
 
 @Service
@@ -43,20 +45,20 @@ public class UserService {
         return (SessionUser) session.getAttribute("sessionUser");
     }
 
-    public UserRespDto enterToken(HttpServletRequest request) {
+    public TokenLoginRespDto enterToken(HttpServletRequest request) {
         String jwtToken = request.getHeader("authorization");
         if (jwtToken == null) {
             throw new CustomApiException("토큰이 헤더에 없습니다.", HttpStatus.ACCEPTED);
         }
-        System.out.println("토큰이 헤더 있습니다." + jwtToken);
         jwtToken = jwtToken.replace(JwtProps.AUTH, "");
 
-        Long userId = JwtProcess.verify(jwtToken);
-        System.out.println("아이디가 있는지 봐야겠소 ," + userId);
+        Long userId = JwtProcess.verifyId(jwtToken);
         User userPS = uR.findByUserId(userId)
                 .orElseThrow(() -> new CustomApiException("토큰 검증 실패", HttpStatus.ACCEPTED));
-        System.out.println("아이디가 있는지 봐야겠소 ," + userPS.getVcUserName());
-        return new UserRespDto(userPS);
+
+        String newToken = "Bearer " + JwtProcess.create(userPS);
+
+        return new TokenLoginRespDto(new UserRespDto(userPS), newToken);
     }
 
     public UserRespDto findByUserId(Long id) {

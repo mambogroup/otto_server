@@ -34,7 +34,7 @@ public class JwtProcess {
         return jwtToken;
     }
 
-    public static Long verify(String jwtToken) {
+    public static Long verifyId(String jwtToken) {
         DecodedJWT decodeJwt = JWT.require(Algorithm.HMAC512(JwtProps.SECRET)).build().verify(jwtToken);
         Long userId = decodeJwt.getClaim("userId").asLong();
         return userId;

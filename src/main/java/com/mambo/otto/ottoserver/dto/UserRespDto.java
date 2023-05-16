@@ -41,6 +41,18 @@ public class UserRespDto {
 
     @Getter
     @Setter
+    public static class TokenLoginRespDto {
+        private UserRespDto userRespDto;
+        private String token;
+
+        public TokenLoginRespDto(UserRespDto userRespDto, String token) {
+            this.userRespDto = userRespDto;
+            this.token = token;
+        }
+    }
+
+    @Getter
+    @Setter
     public static class JoinRespDto {
         private Long getInUserId;
         private String getVcUserName;
