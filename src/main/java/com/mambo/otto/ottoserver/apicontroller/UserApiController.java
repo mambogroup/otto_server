@@ -45,6 +45,9 @@ public class UserApiController {
 
     @GetMapping("/jwtToken")
     public ResponseDto<?> jwtToken(HttpServletRequest request) {
+
+        String jwtToken = request.getHeader("authorization");
+        System.out.println(jwtToken);
         TokenLoginRespDto userPS = uS.enterToken(request);
         return new ResponseDto<>(200, "자동 로그인 성공", userPS);
     }

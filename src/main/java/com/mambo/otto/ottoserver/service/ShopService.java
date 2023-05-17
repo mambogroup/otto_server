@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.mambo.otto.ottoserver.domain.Shop;
 import com.mambo.otto.ottoserver.domain.ShopRepositoey;
+import com.mambo.otto.ottoserver.dto.ShopRespDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,8 +27,9 @@ import lombok.RequiredArgsConstructor;
 public class ShopService {
     private final ShopRepositoey sR;
 
-    public List<Shop> findAll() {
-        // List<Shop> shopList = sR.findAll();
-        return sR.findAll();
+    public ShopRespDto findAll() {
+        List<Shop> shopList = sR.findAll();
+        ShopRespDto shopPS = new ShopRespDto(shopList);
+        return shopPS;
     }
 }
